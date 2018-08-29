@@ -15,22 +15,25 @@ import Home from "./containers/Home";
 
 // CREDIT: https://www.apollographql.com/docs/link/links/rest.html#examples
 const authRestLink = new ApolloLink((operation, forward) => {
-    operation.setContext(async ({ headers }) => {
-        const { accessToken } = getSession();
-        const authHeaders = {
-            headers: Object.assign({}, headers, {
+    operation.setContext(({ headers }) => {
+        const session = getSession();
+        return {
+            headers: {
+                ...headers,
                 Accept: "application/json",
-                Authorization: accessToken,
-            }),
+                Authorization: session ? session.accessToken : null,
+            },
         };
-        return authHeaders;
     });
 
     return forward(operation).map(result => {
         const { restResponses } = operation.getContext();
         const authTokenResponse = restResponses.find(res => res.headers.has("Authorization"));
-        const accessToken = authTokenResponse.headers.get("Authorization");
-        return authTokenResponse ? setSession({ accessToken }) : result;
+        if (authTokenResponse) {
+            const accessToken = authTokenResponse.headers.get("Authorization");
+            setSession({ accessToken });
+        }
+        return result;
     });
 });
 
@@ -42,13 +45,18 @@ const restLink = new RestLink({
     },
     // If the returning data is nested adding a typepatcher allows
     // for adding a typename to the nested object or array
-    typePatcher: {},
+    typePatcher: {
+        AppList: data => {
+            const apps = data.apps ? data.apps.map(app => ({ __typename: "App", ...app })) : apps;
+            return { ...data, apps };
+        },
+    },
 });
 
 const cache = new InMemoryCache();
 const client = new ApolloClient({
     cache,
-    link: ApolloLink.from([/* authRestLink,  */ restLink, new HttpLink()]),
+    link: ApolloLink.from([authRestLink, restLink, new HttpLink()]),
 });
 
 function App() {
