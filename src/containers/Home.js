@@ -14,7 +14,7 @@ function Home(props) {
     return (
         <Router>
             <Applications path="/apps" />
-            <Login path="/login" />
+            <Login path="/" />
         </Router>
     );
 }
