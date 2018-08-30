@@ -3,10 +3,10 @@ import styled from "styled-components";
 import { Mutation } from "react-apollo";
 import { Redirect } from "@reach/router";
 
-import Layout from "./../components/layout";
+import Page from "./../containers/page";
+import Applications from "./../containers/applications";
 import Loading from "./../components/loading";
 import LoginForm from "./../components/loginForm";
-import Applications from "./../containers/applications";
 import { setSession } from "./../services/storage";
 import { LOGIN_USER } from "./../graphql/loginUser";
 
@@ -67,11 +67,11 @@ export class Login extends Component {
 }
 
 export default props => (
-    <Mutation mutation={LOGIN_USER}>
-        {(loginUser, { error, loading, data }) => (
-            <Layout>
+    <Page>
+        <Mutation mutation={LOGIN_USER}>
+            {(loginUser, { error, loading, data }) => (
                 <Login loginUser={loginUser} data={data} error={error} loading={loading} />
-            </Layout>
-        )}
-    </Mutation>
+            )}
+        </Mutation>
+    </Page>
 );

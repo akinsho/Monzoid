@@ -2,10 +2,10 @@ import React, { Fragment, PureComponent } from "react";
 import styled from "styled-components";
 import { Query } from "react-apollo";
 
+import Page from "./../containers/page";
 import { GET_USER_APPS } from "./../graphql/getUserApps";
 import { borderRadius, boxShadow } from "./../common/styles";
 import Loading from "./../components/loading";
-import Layout from "./../components/layout";
 import Pencil from "./../components/pencil";
 
 const List = styled.ul`
@@ -27,13 +27,13 @@ const Image = styled.img`
     height: auto;
 `;
 
-const EditButton = styled.button`
-    border-radius: 50%;
-    color: white;
-    width: 3.5rem;
-    height: 3.5rem;
-    margin: 0.5rem 0;
+const Button = styled.button`
+    border-radius: 0.4rem;
     background: royalblue;
+    color: white;
+    width: 6rem;
+    height: 2.5rem;
+    margin: 0.5rem 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -49,18 +49,22 @@ function formatDate(str) {
     return `${addZero(day)}/${addZero(month)}/${year}`;
 }
 
-function UserApp(props) {
+function UserApp({ app, toggleEditing, handleInput, editing, newLogo, newName }) {
     return (
-        <ListItem key={props.app.id}>
-            <Image src={props.app.logo} />
-            <div>{props.app.name}</div>
-            <div>{formatDate(props.app.created)}</div>
+        <ListItem key={app.id}>
+            <Image src={app.logo} />
+            <div>{app.name}</div>
+            <div>{formatDate(app.created)}</div>
             <div>
-                <EditButton onClick={() => toggleEditing(props.app.id)}>
-                    {!props.editing ? <Pencil /> : "X"}
-                </EditButton>
-                {props.editing && (
-                    <input name={props.app.id} value={props.newName} onChange={props.handleInput} />
+                <Button>See app's users</Button>
+                <Button onClick={() => toggleEditing(app.id)}>
+                    {!editing ? "Edit App" : "Cancel Edit"}
+                </Button>
+                {editing && (
+                    <form>
+                        <input name="name" value={newName} onChange={handleInput} />
+                        <input name="logo" value={newLogo} onChange={handleInput} />
+                    </form>
                 )}
             </div>
         </ListItem>
@@ -69,56 +73,54 @@ function UserApp(props) {
 
 export default class Applications extends PureComponent {
     state = {
-        inputs: {},
-        edits: [],
+        name: "",
+        logo: "",
+        editing: null,
     };
 
     toggleEditing = id => {
-        const { edits } = this.state;
-        const newEdits = edits.includes(id)
-            ? edits.filter(editId => editId !== id)
-            : [...edits, id];
-        this.setState({ edits: newEdits });
+        const { editing } = this.state;
+        const newEdit = id !== editing ? id : null;
+        this.setState({ editing: newEdit });
     };
 
     onChange = evt => {
         const { value, name } = evt.currentTarget;
-        if (value) {
-            this.setState(state => ({ ...state, inputs: { ...state.inputs, [name]: value } }));
-        }
+        this.setState({ [name]: value });
     };
 
     render() {
-        const { edits, inputs } = this.state;
+        const { editing, logo, name } = this.state;
         return (
-            <Query query={GET_USER_APPS}>
-                {({ data, error, loading }) => (
-                    <Layout>
-                        <h3>Apps</h3>
-                        {loading ? (
-                            <Loading />
-                        ) : error || !data ? (
-                            <h3>Woops... sorry something went wrong</h3>
-                        ) : (
-                            <List>
-                                {data.getUserApps.apps.map(app => {
-                                    const editing = edits.includes(app.id);
-                                    return (
-                                        <UserApp
-                                            app={app}
-                                            key={app.id}
-                                            editing={editing}
-                                            newName={inputs[app.id]}
-                                            handleInput={this.handleInput}
-                                            toggleEditing={this.toggleEditing}
-                                        />
-                                    );
-                                })}
-                            </List>
-                        )}
-                    </Layout>
-                )}
-            </Query>
+            <Page>
+                <Query query={GET_USER_APPS}>
+                    {({ data, error, loading }) => (
+                        <Fragment>
+                            <h3>Apps</h3>
+                            {loading ? (
+                                <Loading />
+                            ) : error || !data ? (
+                                <h3>Woops... sorry something went wrong</h3>
+                            ) : (
+                                <List>
+                                    {data.getUserApps.apps &&
+                                        data.getUserApps.apps.map(app => (
+                                            <UserApp
+                                                app={app}
+                                                key={app.id}
+                                                newName={name}
+                                                newLogo={logo}
+                                                editing={editing === app.id}
+                                                handleInput={this.onChange}
+                                                toggleEditing={this.toggleEditing}
+                                            />
+                                        ))}
+                                </List>
+                            )}
+                        </Fragment>
+                    )}
+                </Query>
+            </Page>
         );
     }
 }

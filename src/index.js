@@ -38,7 +38,6 @@ const authRestLink = new ApolloLink((operation, forward) => {
 });
 
 const restLink = new RestLink({
-    // uri: "https://guarded-thicket-22918.herokuapp.com",
     uri: process.env.API_URL,
     headers: {
         "Content-Type": "application/json",
@@ -49,6 +48,10 @@ const restLink = new RestLink({
         AppList: data => {
             const apps = data.apps ? data.apps.map(app => ({ __typename: "App", ...app })) : apps;
             return { ...data, apps };
+        },
+        Status: data => {
+            const updated = { ...data, token: { ...data.token, __typename: "Token" } };
+            return updated;
         },
     },
 });
