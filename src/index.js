@@ -38,8 +38,8 @@ const authRestLink = new ApolloLink((operation, forward) => {
 });
 
 const restLink = new RestLink({
-    // uri: process.env.API_URL,
-    uri: "https://guarded-thicket-22918.herokuapp.com",
+    // uri: "https://guarded-thicket-22918.herokuapp.com",
+    uri: process.env.API_URL,
     headers: {
         "Content-Type": "application/json",
     },

@@ -92,37 +92,32 @@ export default class Applications extends PureComponent {
         const { edits, inputs } = this.state;
         return (
             <Query query={GET_USER_APPS}>
-                {({ data, error, loading }) => {
-                    return (
-                        <Layout>
-                            <h3>Apps</h3>
-                            {!loading ? (
-                                error ? (
-                                    <h3>Woops... sorry something went wrong</h3>
-                                ) : (
-                                    <List>
-                                        {data &&
-                                            data.getUserApps.apps.map(app => {
-                                                const editing = edits.includes(app.id);
-                                                return (
-                                                    <UserApp
-                                                        app={app}
-                                                        key={app.id}
-                                                        editing={editing}
-                                                        newName={inputs[app.id]}
-                                                        handleInput={this.handleInput}
-                                                        toggleEditing={this.toggleEditing}
-                                                    />
-                                                );
-                                            })}
-                                    </List>
-                                )
-                            ) : (
-                                <Loading />
-                            )}
-                        </Layout>
-                    );
-                }}
+                {({ data, error, loading }) => (
+                    <Layout>
+                        <h3>Apps</h3>
+                        {loading ? (
+                            <Loading />
+                        ) : error || !data ? (
+                            <h3>Woops... sorry something went wrong</h3>
+                        ) : (
+                            <List>
+                                {data.getUserApps.apps.map(app => {
+                                    const editing = edits.includes(app.id);
+                                    return (
+                                        <UserApp
+                                            app={app}
+                                            key={app.id}
+                                            editing={editing}
+                                            newName={inputs[app.id]}
+                                            handleInput={this.handleInput}
+                                            toggleEditing={this.toggleEditing}
+                                        />
+                                    );
+                                })}
+                            </List>
+                        )}
+                    </Layout>
+                )}
             </Query>
         );
     }
