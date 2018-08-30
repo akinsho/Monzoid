@@ -14,6 +14,7 @@ export class Login extends Component {
     state = {
         email: "",
         password: "",
+        authenticated: false,
     };
 
     handleChange = evt => {

@@ -59,6 +59,10 @@ const restLink = new RestLink({
             const users = data.users ? data.users.map(user => typePatch(user, "User")) : data.users;
             return { ...data, users };
         },
+        Update: data => {
+            const app = { ...data, app: typePatch(data.app, "Updated_App") };
+            return app;
+        },
     },
 });
 

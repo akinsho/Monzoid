@@ -9,6 +9,23 @@ export const borderRadius = css`
 `;
 
 export const fullSize = css`
-  width: 100%;
-  height: 100%;
+    width: 100%;
+    height: 100%;
+`;
+
+export const flexCenter = css`
+    justify-content: center;
+    align-items: center;
+`;
+
+export const flexRow = css`
+    display: flex;
+    flex-direction: row;
+    ${flexCenter};
+`;
+
+export const flexColumn = css`
+    display: flex;
+    flex-direction: column;
+    ${flexCenter};
 `;

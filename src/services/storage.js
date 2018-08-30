@@ -17,3 +17,9 @@ export function setSession(item) {
         window.sessionStorage.setItem(key, stringified);
     }
 }
+
+export function clearSession() {
+    if (window && window.sessionStorage) {
+        window.sessionStorage.clear();
+    }
+}

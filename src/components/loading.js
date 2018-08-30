@@ -18,9 +18,8 @@ const Loading = styled.div`
     width: 6rem;
     animation: ${spin} 2s linear infinite;
     z-index: 5;
-    position: fixed;
-    top: 50%;
-    left: 50%;
+    position: relative;
+    margin: auto;
     transform: translate(-50%, -50%);
 `;
 
