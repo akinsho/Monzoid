@@ -3,9 +3,10 @@ import styled from "styled-components";
 
 import { borderRadius, boxShadow } from "./../common/styles";
 import Heading from "./heading";
+import Image from "./image";
 
 const ListItem = styled.li`
-    ${boxShadow};
+    box-shadow: 0.1rem 0.4rem 0.2rem rgba(0, 0, 0, 0.4);
     ${borderRadius};
     height: ${({ height = "30rem" }) => height};
     width: ${({ width = "15rem" }) => width};
@@ -13,11 +14,6 @@ const ListItem = styled.li`
     padding: 1rem;
     margin: 1rem 0;
     background: whitesmoke;
-`;
-
-const Image = styled.img`
-    width: 20rem;
-    height: auto;
 `;
 
 const Subsection = styled.div`

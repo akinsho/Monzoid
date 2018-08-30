@@ -29,6 +29,7 @@ function formatDate(str) {
 function UserApp({ app, editing, newLogo, newName, ...props }) {
     return (
         <Card
+            wide
             key={app.id}
             src={app.logo}
             name={app.name}

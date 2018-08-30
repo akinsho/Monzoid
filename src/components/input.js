@@ -15,9 +15,13 @@ const Input = styled.input`
     ${({ empty }) =>
         !empty &&
         `:invalid {
-            border: 2px dashed red;
+            border: 0.2rem dashed red;
         }
     `};
+
+    :valid {
+        border: 0.2rem solid green;
+    }
 
     :focus {
         border: 0.2rem solid royalblue;

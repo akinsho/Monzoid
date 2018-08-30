@@ -63,7 +63,7 @@ export default class Applications extends PureComponent {
                                     input: { logo, name },
                                 },
                             });
-                            this.setState({ name: "", logo: "" });
+                            this.setState({ name: "", logo: "", editing: null });
                         };
 
                         return (
