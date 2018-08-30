@@ -67,7 +67,7 @@ export class Login extends Component {
 }
 
 export default props => (
-    <Page>
+    <Page {...props}>
         <Mutation mutation={LOGIN_USER}>
             {(loginUser, { error, loading, data }) => (
                 <Login loginUser={loginUser} data={data} error={error} loading={loading} />

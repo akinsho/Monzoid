@@ -7,10 +7,9 @@ import Nav from "./../components/nav";
 const HomeContainer = styled.main`
     width: 100%;
     min-height: 100%;
-    background: rgba(0, 0, 0, 0.8);
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-around;
     align-items: center;
     position: relative;
     padding-top: 3rem;
@@ -20,18 +19,22 @@ const HomeContainer = styled.main`
 const Title = styled.h2`
     text-align: center;
     display: inline-block;
-    margin-right: 1rem;
     color: white;
+    text-transform: lowercase;
+`;
+
+const TitleContainer = styled.div`
+    position: relative;
 `;
 
 export default function Layout(props) {
     return (
         <HomeContainer>
             <Nav />
-            <div>
-                <Title>Monzoid</Title>
+            <TitleContainer>
                 <Heart />
-            </div>
+                <Title>Monzoid</Title>
+            </TitleContainer>
             {props.children}
         </HomeContainer>
     );

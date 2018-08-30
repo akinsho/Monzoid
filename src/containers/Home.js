@@ -2,6 +2,7 @@ import React from "react";
 import { Router as ReachRouter } from "@reach/router";
 import styled from "styled-components";
 
+import Users from "./users";
 import Login from "./login";
 import Applications from "./applications";
 
@@ -13,8 +14,9 @@ const Router = styled(ReachRouter)`
 function Home(props) {
     return (
         <Router>
-            <Applications path="/apps" />
             <Login path="/" />
+            <Applications path="/apps" />
+            <Users path="/users/:id" />
         </Router>
     );
 }

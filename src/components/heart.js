@@ -15,9 +15,11 @@ const pulse = keyframes`
 
 const HeartShape = styled(HeartSvg)`
     fill: red;
-    position: relative;
-    top: 5px;
-    width: 50px;
+    width: 1rem;
+    position: absolute;
+    margin: 0 auto;
+    top: 0
+    right: 0;
     animation: ${pulse} 1.5s ease infinite;
 `;
 

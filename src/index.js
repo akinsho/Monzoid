@@ -37,6 +37,8 @@ const authRestLink = new ApolloLink((operation, forward) => {
     });
 });
 
+const typePatch = (data, __typename) => ({ __typename, ...data });
+
 const restLink = new RestLink({
     uri: process.env.API_URL,
     headers: {
@@ -46,12 +48,16 @@ const restLink = new RestLink({
     // for adding a typename to the nested object or array
     typePatcher: {
         AppList: data => {
-            const apps = data.apps ? data.apps.map(app => ({ __typename: "App", ...app })) : apps;
+            const apps = data.apps ? data.apps.map(app => typePatch(app, "App")) : apps;
             return { ...data, apps };
         },
         Status: data => {
-            const updated = { ...data, token: { ...data.token, __typename: "Token" } };
+            const updated = { ...data, token: typePatch(data.token, "Token") };
             return updated;
+        },
+        UsersList: data => {
+            const users = data.users ? data.users.map(user => typePatch(user, "User")) : data.users;
+            return { ...data, users };
         },
     },
 });
