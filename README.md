@@ -24,7 +24,7 @@ values.
 
 ### Run Locally
 
-1.  clone this repository.
+1.  Clone this repository.
 1.  Run `yarn` or `npm install`
 1.  **Important** create a `.env` file _now_ and add
 
@@ -33,7 +33,6 @@ values.
 ```
 
 -   parcel is occasionally flaky at picking up a `.env` file so having it
-
-setup before you run the project is a good way to get around this
+    setup before you run the project is a good way to get around this
 
 1.  `yarn start` or `npm start` and navigate to `localhost:1234`
