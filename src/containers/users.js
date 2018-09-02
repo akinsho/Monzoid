@@ -55,7 +55,7 @@ class Users extends PureComponent {
                                 <Row>
                                     {/* TODO: Add a previous button*/}
                                     <Button width="15rem" onClick={nextPage}>
-                                        Next Page ({page})
+                                        Next Page (current page - {page})
                                     </Button>
                                 </Row>
                                 <Grid>

@@ -9,7 +9,7 @@ const HomeContainer = styled.main`
     min-height: 100%;
     display: flex;
     flex-direction: column;
-    justify-content: space-around;
+    justify-content: center;
     align-items: center;
     position: relative;
     padding-top: 3rem;

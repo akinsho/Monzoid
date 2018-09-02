@@ -5,7 +5,6 @@ import { borderRadius, boxShadow, flexColumn } from "./../common/styles";
 import Card from "./../components/card";
 import Button from "./../components/button";
 import Input from "./../components/input";
-import Pencil from "./../components/pencil";
 
 const UpdateForm = styled.form`
     width: 80%;
@@ -16,15 +15,14 @@ const Contents = styled.div`
     ${flexColumn};
 `;
 
-const addZero = num => num.toString().padStart(2, "0");
-
-function formatDate(str) {
-    const date = new Date(str);
-    const day = date.getDay();
-    const month = date.getMonth();
-    const year = date.getFullYear();
-    return `${addZero(day)}/${addZero(month)}/${year}`;
-}
+const formatDate = dateStr => {
+    return new Date(dateStr).toLocaleDateString("en-GB", {
+        weekday: "long",
+        day: "numeric",
+        month: "long",
+        year: "numeric",
+    });
+};
 
 function UserApp({ app, editing, newLogo, newName, ...props }) {
     return (

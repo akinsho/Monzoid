@@ -22,7 +22,7 @@ const Subsection = styled.div`
 
 function Card(props) {
     return (
-        <ListItem height={props.tall && "40rem"} width={props.wide && "20rem"}>
+        <ListItem height={props.tall ? "40rem" : null} width={props.wide ? "20rem" : null}>
             <Image src={props.src} alt={`Picture of ${props.name}`} />
             <Heading color="black">{props.name}</Heading>
             <Subsection>{props.metadata}</Subsection>

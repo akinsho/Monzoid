@@ -67,12 +67,12 @@ export default class Applications extends PureComponent {
                         };
 
                         return (
-                            <Fragment>
+                            <div>
                                 <Heading>Apps</Heading>
                                 {loading ? (
                                     <Loading />
                                 ) : error || !getUserApps.data ? (
-                                    <h3>Woops... sorry something went wrong</h3>
+                                    <h3>Woops 😩... sorry something went wrong</h3>
                                 ) : (
                                     <Grid>
                                         {getUserApps.data.getUserApps.apps.map(app => {
@@ -92,7 +92,7 @@ export default class Applications extends PureComponent {
                                         })}
                                     </Grid>
                                 )}
-                            </Fragment>
+                            </div>
                         );
                     }}
                 </GraphQL>

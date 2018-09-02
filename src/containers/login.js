@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import styled from "styled-components";
 import { Mutation } from "react-apollo";
 import { Redirect } from "@reach/router";
@@ -15,6 +15,7 @@ export class Login extends Component {
         email: "",
         password: "",
         authenticated: false,
+        error: false,
     };
 
     handleChange = evt => {
@@ -27,42 +28,46 @@ export class Login extends Component {
     handleLogin = async evt => {
         evt.preventDefault();
         const { email, password } = this.state;
-        // Example login: email: "mondo@example.com", password: "hunter2"
         if (email && password) {
-            await this.props.loginUser({ variables: { input: { email, password } } });
+            try {
+                await this.props.loginUser({ variables: { input: { email, password } } });
+                const { data } = this.props;
+                const accessToken = data && data.loginUser;
 
-            const { data } = this.props;
-            const accessToken = data && data.loginUser;
-
-            if (accessToken) {
-                setSession(accessToken);
+                if (accessToken) {
+                    setSession(accessToken);
+                }
+                this.setState({ authenticated: !!accessToken });
+            } catch (error) {
+                this.setState({ error: true, authenticated: false });
             }
 
-            this.setState({ authenticated: !!accessToken, email: "", password: "" });
+            this.setState({ email: "", password: "" });
         }
     };
 
     render() {
-        const { password, email } = this.state;
-        if (this.props.loading) {
+        const { loading, data } = this.props;
+        const { password, email, error, authenticated } = this.state;
+
+        if (loading) {
             return <Loading />;
         }
 
-        if (this.props.data) {
-            return this.state.authenticated ? (
-                <Redirect to="/apps" />
-            ) : (
-                <div>Sorry Login failed</div>
-            );
+        if (data) {
+            return this.state.authenticated && <Redirect to="/apps" noThrow />;
         }
 
         return (
-            <LoginForm
-                email={email}
-                password={password}
-                handleChange={this.handleChange}
-                handleLogin={this.handleLogin}
-            />
+            <Fragment>
+                {error && <div>Sorry! 😔 we weren't able to log you in</div>}
+                <LoginForm
+                    email={email}
+                    password={password}
+                    handleChange={this.handleChange}
+                    handleLogin={this.handleLogin}
+                />
+            </Fragment>
         );
     }
 }
